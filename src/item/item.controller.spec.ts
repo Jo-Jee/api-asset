@@ -3,7 +3,7 @@ import { ItemController } from './item.controller';
 import { ItemNotFound } from './exception/itemNotFound.exception';
 import { ItemService } from './item.service';
 import { OkRes } from 'src/common/dto/ok.res';
-import { ItemParam } from './dto/item.param';
+import { ItemDto } from './dto/item.dto';
 
 describe('ItemController', () => {
   let controller: ItemController;
@@ -22,14 +22,14 @@ describe('ItemController', () => {
   });
 
   describe('get item test', () => {
-    const itemParam: ItemParam = { name: 'test' };
+    const itemDto: ItemDto = { name: 'test' };
 
     it('should throw ItemNotFound', async () => {
       await expect(controller.getItem(1)).rejects.toEqual(new ItemNotFound());
     });
 
-    it('post item with ItemParam should return ok', async () => {
-      expect(await controller.postItem(itemParam)).toEqual(new OkRes());
+    it('post item with ItemDto should return ok', async () => {
+      expect(await controller.postItem(itemDto)).toEqual(new OkRes());
     });
   });
 });

@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsNumber } from 'class-validator';
 
 export class ItemParam {
-  @IsString()
+  @IsNumber()
   @ApiProperty()
-  name: string;
+  id: number;
 }
