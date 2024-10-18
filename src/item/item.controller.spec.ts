@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ItemController } from './item.controller';
 import { ItemNotFound } from './exception/itemNotFound.exception';
 import { ItemService } from './item.service';
+import { OkRes } from 'src/common/dto/ok.res';
+import { ItemParam } from './dto/item.param';
 
 describe('ItemController', () => {
   let controller: ItemController;
@@ -20,10 +22,14 @@ describe('ItemController', () => {
   });
 
   describe('get item test', () => {
+    const itemParam: ItemParam = { name: 'test' };
+
     it('should throw ItemNotFound', async () => {
       await expect(controller.getItem(1)).rejects.toEqual(new ItemNotFound());
     });
 
-    it('should return ok', async () => {});
+    it('post item with ItemParam should return ok', async () => {
+      expect(await controller.postItem(itemParam)).toEqual(new OkRes());
+    });
   });
 });
