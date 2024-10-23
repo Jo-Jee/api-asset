@@ -18,6 +18,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
       autoLoadEntities: true,
       synchronize: true,
       namingStrategy: new SnakeNamingStrategy(),
+      logging: true,
     }),
     ItemModule,
     CommonModule,

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
+import { RecordDto } from './record.dto';
 
 export class ItemDto {
   @IsNumber()
@@ -10,4 +11,9 @@ export class ItemDto {
   @IsString()
   @ApiProperty()
   name: string;
+
+  @IsArray()
+  @IsOptional()
+  @ApiProperty()
+  records?: RecordDto[];
 }

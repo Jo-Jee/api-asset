@@ -1,7 +1,14 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Item } from './item.entity';
 
 @Entity()
+@Index(['item', 'year', 'month'], { unique: true })
 export class Record {
   @PrimaryGeneratedColumn()
   id: number;
@@ -18,9 +25,6 @@ export class Record {
   @Column()
   month: number;
 
-  @Column()
-  day: number;
-
-  @ManyToOne(() => Item, (item) => item.records)
+  @ManyToOne(() => Item, (item) => item.records, { nullable: false })
   item: Item;
 }

@@ -3,6 +3,7 @@ import { ItemService } from './item.service';
 import { OkRes } from 'src/common/dto/ok.res';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ItemDto } from './dto/item.dto';
+import { RecordDto } from './dto/record.dto';
 
 @ApiTags('items')
 @Controller('items')
@@ -12,7 +13,7 @@ export class ItemController {
   @ApiOkResponse({ type: ItemDto, isArray: true })
   @Get('/')
   async getAllItem() {
-    return this.itemService.findAllItem();
+    return await this.itemService.findAllItem(2024);
   }
 
   @ApiOkResponse({ type: ItemDto })
@@ -25,6 +26,14 @@ export class ItemController {
   @Post()
   async postItem(@Body() itemDto: ItemDto) {
     this.itemService.createItem(itemDto);
+
+    return new OkRes();
+  }
+
+  @ApiCreatedResponse()
+  @Post('/:id/records')
+  async postRecord(@Param('id') id: number, @Body() recordDto: RecordDto) {
+    this.itemService.createRecord(id, recordDto);
 
     return new OkRes();
   }
