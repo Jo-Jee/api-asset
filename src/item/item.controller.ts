@@ -12,8 +12,14 @@ export class ItemController {
 
   @ApiOkResponse({ type: ItemDto, isArray: true })
   @Get('/')
-  async getAllItem() {
+  async getAllItems() {
     return await this.itemService.findAllItem(2024);
+  }
+
+  @ApiOkResponse({ type: ItemDto, isArray: true })
+  @Get('/groups')
+  async getAllGroups() {
+    return await this.itemService.findAllGroups();
   }
 
   @ApiOkResponse({ type: ItemDto })

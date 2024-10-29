@@ -1,18 +1,18 @@
-import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Item } from './item.entity';
-import { ItemGroupRelation } from './itemGroupRelation.entity copy';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { GroupItem } from './groupItem.entity';
+import { GroupRatio } from './groupRatio.entity';
 
 @Entity()
 export class Group {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Item, (item) => item.records, { nullable: false })
-  item: Item;
+  @Column()
+  name: string;
 
-  @OneToMany(
-    () => ItemGroupRelation,
-    (itemGroupRelation) => itemGroupRelation.group,
-  )
-  itemGroupRelation: ItemGroupRelation[];
+  @OneToMany(() => GroupItem, (groupItem) => groupItem.group)
+  groupItem: GroupItem[];
+
+  @OneToMany(() => GroupItem, (groupItem) => groupItem.group)
+  groupRatio: GroupRatio[];
 }
