@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { ItemNotFound } from './exception/itemNotFound.exception';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Item } from './entity/item.entity';
-import { IsNull, Repository } from 'typeorm';
+import { In, IsNull, Repository } from 'typeorm';
 import { ItemDto } from './dto/item.dto';
 import { RecordDto } from './dto/record.dto';
 import { Record } from './entity/record.entity';
 import { Group } from './entity/group.entity';
+import { GroupParam } from './dto/group.param';
+import { GroupItem } from './entity/groupItem.entity';
 
 @Injectable()
 export class ItemService {
@@ -51,11 +53,27 @@ export class ItemService {
 
   async findAllGroups() {
     const groups = await this.groupRepository.find({
-      relations: ['itemGroupRelations.item'],
+      relations: ['groupItems.item'],
     });
 
-    console.log(groups);
-
     return groups;
+  }
+
+  async createGroup(groupParam: GroupParam) {
+    const group: Group = { ...new Group(), ...groupParam };
+    const items = await this.itemRepository.find({
+      where: { id: In(groupParam.itemIds) },
+    });
+
+    group.groupItems = items.map((item) => {
+      const groupItem: GroupItem = {
+        ...new GroupItem(),
+        item: item,
+        group: group,
+      };
+      return groupItem;
+    });
+
+    this.groupRepository.save(group);
   }
 }

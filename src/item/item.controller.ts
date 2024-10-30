@@ -1,9 +1,19 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ItemService } from './item.service';
 import { OkRes } from 'src/common/dto/ok.res';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ItemDto } from './dto/item.dto';
 import { RecordDto } from './dto/record.dto';
+import { GroupDto } from './dto/group.dto';
+import { GroupParam } from './dto/group.param';
 
 @ApiTags('items')
 @Controller('items')
@@ -16,10 +26,12 @@ export class ItemController {
     return await this.itemService.findAllItem(2024);
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @ApiOkResponse({ type: ItemDto, isArray: true })
   @Get('/groups')
   async getAllGroups() {
-    return await this.itemService.findAllGroups();
+    const groups = await this.itemService.findAllGroups();
+    return groups.map((group) => new GroupDto(group));
   }
 
   @ApiOkResponse({ type: ItemDto })
@@ -40,6 +52,14 @@ export class ItemController {
   @Post('/:id/records')
   async postRecord(@Param('id') id: number, @Body() recordDto: RecordDto) {
     this.itemService.createRecord(id, recordDto);
+
+    return new OkRes();
+  }
+
+  @ApiCreatedResponse()
+  @Post('/groups')
+  async postGroup(@Body() groupParam: GroupParam) {
+    this.itemService.createGroup(groupParam);
 
     return new OkRes();
   }

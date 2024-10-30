@@ -10,8 +10,8 @@ export class Group {
   @Column()
   name: string;
 
-  @OneToMany(() => GroupItem, (groupItem) => groupItem.group)
-  groupItem: GroupItem[];
+  @OneToMany(() => GroupItem, (groupItem) => groupItem.group, { cascade: true })
+  groupItems: GroupItem[];
 
   @OneToMany(() => GroupItem, (groupItem) => groupItem.group)
   groupRatio: GroupRatio[];

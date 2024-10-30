@@ -7,7 +7,7 @@ export class GroupItem {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Group, (group) => group.groupItem, {
+  @ManyToOne(() => Group, (group) => group.groupItems, {
     nullable: false,
   })
   group: Group;
