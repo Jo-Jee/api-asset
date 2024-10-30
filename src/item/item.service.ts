@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { ItemNotFound } from './exception/itemNotFound.exception';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Item } from './entity/item.entity';
-import { In, IsNull, Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
+import { GroupParam } from './dto/group.param';
+import { GroupRatioParam } from './dto/groupRatio.param';
 import { ItemDto } from './dto/item.dto';
 import { RecordDto } from './dto/record.dto';
-import { Record } from './entity/record.entity';
 import { Group } from './entity/group.entity';
-import { GroupParam } from './dto/group.param';
 import { GroupItem } from './entity/groupItem.entity';
-import { GroupRatioParam } from './dto/groupRatio.param';
 import { GroupRatio } from './entity/groupRatio.entity';
+import { Item } from './entity/item.entity';
+import { Record } from './entity/record.entity';
+import { ItemNotFound } from './exception/itemNotFound.exception';
 
 @Injectable()
 export class ItemService {
@@ -28,15 +28,6 @@ export class ItemService {
     if (!item) throw new ItemNotFound();
 
     return item;
-  }
-
-  async findAllItem(year: number) {
-    const items = await this.itemRepository.find({
-      relations: ['records'],
-      where: { records: [{ year: year }, { year: IsNull() }] },
-    });
-
-    return items;
   }
 
   async createItem(itemDto: ItemDto) {
@@ -57,7 +48,8 @@ export class ItemService {
 
   async findAllGroups() {
     const groups = await this.groupRepository.find({
-      relations: ['groupItems.item'],
+      relations: ['groupItems.item.records'],
+      where: { groupItems: { item: { records: { year: 2024 } } } },
     });
 
     return groups;

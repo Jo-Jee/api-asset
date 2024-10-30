@@ -21,12 +21,6 @@ import { GroupRatioParam } from './dto/groupRatio.param';
 export class ItemController {
   constructor(private itemService: ItemService) {}
 
-  @ApiOkResponse({ type: ItemDto, isArray: true })
-  @Get('/')
-  async getAllItems() {
-    return await this.itemService.findAllItem(2024);
-  }
-
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiOkResponse({ type: ItemDto, isArray: true })
   @Get('/groups')
