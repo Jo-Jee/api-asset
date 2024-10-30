@@ -14,6 +14,7 @@ import { ItemDto } from './dto/item.dto';
 import { RecordDto } from './dto/record.dto';
 import { GroupDto } from './dto/group.dto';
 import { GroupParam } from './dto/group.param';
+import { GroupRatioParam } from './dto/groupRatio.param';
 
 @ApiTags('items')
 @Controller('items')
@@ -62,5 +63,19 @@ export class ItemController {
     this.itemService.createGroup(groupParam);
 
     return new OkRes();
+  }
+
+  @ApiCreatedResponse()
+  @Post('/groups/rationes')
+  async postGroupRatio(@Body() groupRatioParam: GroupRatioParam) {
+    this.itemService.createGroupRatio(groupRatioParam);
+
+    return new OkRes();
+  }
+
+  @ApiOkResponse()
+  @Get('/groups/rationes')
+  async getGroupRatio() {
+    return this.itemService.findAllGroupRationes();
   }
 }

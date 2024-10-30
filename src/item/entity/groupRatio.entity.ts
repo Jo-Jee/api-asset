@@ -7,9 +7,6 @@ export class GroupRatio {
   id: number;
 
   @Column()
-  name: string;
-
-  @Column()
   ratio: number;
 
   @ManyToOne(() => Group, (group) => group.groupRatio, {
