@@ -6,16 +6,15 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Item } from './item.entity';
-import { Account } from './account.entity';
 
 @Entity()
-@Index(['item', 'account', 'year', 'month'], { unique: true })
-export class Record {
+@Index(['item', 'year', 'month'], { unique: true })
+export class Price {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  quantity: number;
+  @Column({ default: 0 })
+  price: number;
 
   @Column()
   year: number;
@@ -25,7 +24,4 @@ export class Record {
 
   @ManyToOne(() => Item, (item) => item.records, { nullable: false })
   item: Item;
-
-  @ManyToOne(() => Account, (account) => account.records, { nullable: false })
-  account: Account;
 }

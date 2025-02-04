@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsNumber, IsOptional } from 'class-validator';
+import { IsInt, IsNumber, IsObject, IsOptional } from 'class-validator';
+import { AccountDto } from './account.dto';
 
 export class RecordDto {
   @IsNumber()
@@ -7,9 +8,9 @@ export class RecordDto {
   @ApiProperty()
   id?: number;
 
-  @IsNumber()
+  @IsObject()
   @ApiProperty()
-  price: number;
+  account: AccountDto;
 
   @IsNumber()
   @ApiProperty()

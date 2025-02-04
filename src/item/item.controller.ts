@@ -7,14 +7,16 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ItemService } from './item.service';
-import { OkRes } from 'src/common/dto/ok.res';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { ItemDto } from './dto/item.dto';
-import { RecordDto } from './dto/record.dto';
+import { OkRes } from 'src/common/dto/ok.res';
+import { AccountParam } from './dto/account.param';
 import { GroupDto } from './dto/group.dto';
 import { GroupParam } from './dto/group.param';
 import { GroupRatioParam } from './dto/groupRatio.param';
+import { ItemDto } from './dto/item.dto';
+import { RecordParam } from './dto/record.param';
+import { ItemService } from './item.service';
+import { PriceParam } from './dto/price.param';
 
 @ApiTags('items')
 @Controller('items')
@@ -45,8 +47,8 @@ export class ItemController {
 
   @ApiCreatedResponse()
   @Post('/:id/records')
-  async postRecord(@Param('id') id: number, @Body() recordDto: RecordDto) {
-    this.itemService.createRecord(id, recordDto);
+  async postRecord(@Param('id') id: number, @Body() recordParam: RecordParam) {
+    this.itemService.createRecord(id, recordParam);
 
     return new OkRes();
   }
@@ -71,5 +73,21 @@ export class ItemController {
   @Get('/groups/rationes')
   async getGroupRatio() {
     return this.itemService.findAllGroupRationes();
+  }
+
+  @ApiCreatedResponse()
+  @Post('/accounts')
+  async postAccount(@Body() accountParam: AccountParam) {
+    this.itemService.createAccount(accountParam);
+
+    return new OkRes();
+  }
+
+  @ApiCreatedResponse()
+  @Post('/:id/prices')
+  async postPrice(@Param('id') id: number, @Body() priceParam: PriceParam) {
+    this.itemService.createPrice(id, priceParam);
+
+    return new OkRes();
   }
 }
